@@ -5,6 +5,6 @@ import Command
 import Actions
 
 mapCommandToAction :: UserCommand -> Action
-mapCommandToAction (GoToRoom {newRoomId=rId}) = GoToRoomAction rId 
+mapCommandToAction (GoToRoom {newRoomName=roomName}) = GoToRoomAction roomName
 
 mapCommandToAction (GetInfo) = GetInfoAction
