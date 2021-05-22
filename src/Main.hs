@@ -8,17 +8,28 @@ import User
 import Actions
 import Mapping
 import DispatchOutput
+import Item 
 
-livingRoom = Room {roomName="salon", otherRooms=["gabinet", "kuchnia", "lazienka"], roomObjects=[]}
-office = Room {roomName="gabinet", otherRooms=["salon"], roomObjects=[]}
-toilet = Room {roomName="lazienka", otherRooms=["salon"], roomObjects=[]}
-kitchen = Room {roomName="kuchnia", otherRooms=["salon"], roomObjects=[]}
+livingRoom = Room {otherRooms=["gabinet", "kuchnia", "lazienka"], roomItems=["item1"], roomObjects=[]}
+office = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
+toilet = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
+kitchen = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
 
-mapRooms = [livingRoom, office, toilet, kitchen]
+roomSet :: [(String, Room)]
+roomSet = [("salon", livingRoom),
+           ("gabinet", office),
+           ("lazienka", toilet),
+           ("kuchnia", kitchen)]
+item1 = Item {innerItems=[], onReadMsg="Simple msg"}
 
-userChar = UserCharacter{currentRoomName="salon"}
+itemSet :: [(String, Item)]
+itemSet = [("item1", item1)]
 
-initialAppState = AppState {user=userChar, rooms=mapRooms}
+
+userChar :: UserCharacter
+userChar = UserCharacter{currentRoomName="salon", inventory=[]}
+
+initialAppState = AppState {user=userChar, rooms=roomSet, items=itemSet}
 
 action =  mapCommandToAction (GoToRoom {newRoomName="gabinet"})
 

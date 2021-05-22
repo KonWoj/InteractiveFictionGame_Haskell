@@ -1,3 +1,3 @@
 module User where
 
-data UserCharacter = UserCharacter { currentRoomName :: String} deriving Show
+data UserCharacter = UserCharacter { currentRoomName :: String, inventory :: [String]} deriving Show

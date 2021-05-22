@@ -12,12 +12,16 @@ parseInteger str  = readMaybe str
 parseGoToRoomCommand :: String -> Maybe Command.UserCommand
 parseGoToRoomCommand param = Just (GoToRoom {newRoomName=(trim param)})
 
+parsePickUpCommand :: String -> Maybe Command.UserCommand 
+parsePickUpCommand param = Just (PickUp {newItem=(trim param)})
+
 parseCommandInner :: String -> String -> Maybe Command.UserCommand 
 parseCommandInner x [] | x == "getInfo" = Just GetInfo
                        | x == "help" = Just Help
                        | otherwise = Nothing
 
 parseCommandInner x (y:ys) | x == "goToRoom" = parseGoToRoomCommand (y:ys)
+                           | x == "pickUp" = parsePickUpCommand (y:ys)
                            | otherwise = parseCommandInner (x ++ [y]) ys
 
 parseCommand :: String -> Maybe Command.UserCommand
