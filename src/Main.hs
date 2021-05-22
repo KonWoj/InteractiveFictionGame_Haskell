@@ -7,19 +7,20 @@ import AppState
 import User
 import Actions
 import Mapping
+import DispatchOutput
 
+livingRoom = Room {roomName="salon", otherRooms=["gabinet", "kuchnia", "lazienka"], roomObjects=[]}
+office = Room {roomName="gabinet", otherRooms=["salon"], roomObjects=[]}
+toilet = Room {roomName="lazienka", otherRooms=["salon"], roomObjects=[]}
+kitchen = Room {roomName="kuchnia", otherRooms=["salon"], roomObjects=[]}
 
+mapRooms = [livingRoom, office, toilet, kitchen]
 
-secondRoom = Room {roomNumber=2, otherRooms=[1], roomObjects=[]}
-firstRoom = Room {roomNumber=1, otherRooms=[2], roomObjects=[]}
-
-mapRooms = [firstRoom, secondRoom]
-
-userChar = UserCharacter{currentRoomId=1}
+userChar = UserCharacter{currentRoomName="salon"}
 
 initialAppState = AppState {user=userChar, rooms=mapRooms}
 
-action =  mapCommandToAction (GoToRoom {newRoomId=2})
+action =  mapCommandToAction (GoToRoom {newRoomName="gabinet"})
 
 game appState = do 
                     putStr ">"
@@ -35,13 +36,16 @@ game appState = do
                         Just Help -> do
                                         putStr (helpAction ++ "\n")
                                         game appState  
-                        Just comm -> game (dispatch appState (mapCommandToAction comm))
+                        Just comm -> do
+                                        putStr (DispatchOutput.output dispatchOutput ++ "\n")
+                                        game (DispatchOutput.appState dispatchOutput)
+                                            where dispatchOutput = (dispatch appState (mapCommandToAction comm))
                         Nothing -> do
                                     putStr ("Niepoprawna komenda, wpisz help aby poznać poprawne komendy."++ "\n")
                                     game appState
 
 
 
-main = do 
+main = do  
           game initialAppState
 

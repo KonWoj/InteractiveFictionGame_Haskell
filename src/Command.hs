@@ -1,3 +1,3 @@
 module Command where
 
-data UserCommand = Help | GetInfo | GoToRoom {newRoomId :: Int} deriving Show
+data UserCommand = Help | GetInfo | GoToRoom {newRoomName :: String} deriving Show
