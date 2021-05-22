@@ -11,8 +11,6 @@ parseInteger str  = readMaybe str
 
 parseGoToRoomCommand :: String -> Maybe Command.UserCommand
 parseGoToRoomCommand param = Just (GoToRoom {newRoomName=(trim param)})
-                        --      where readIfNotNothing (Just roomNumber) = Just (GoToRoom {newRoomId=roomNumber})
-                        --            readIfNotNothing Nothing = Nothing
 
 parseCommandInner :: String -> String -> Maybe Command.UserCommand 
 parseCommandInner x [] | x == "getInfo" = Just GetInfo
