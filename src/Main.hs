@@ -10,10 +10,10 @@ import Mapping
 import DispatchOutput
 import Item 
 
-livingRoom = Room {otherRooms=["gabinet", "kuchnia", "lazienka"], roomItems=["matrioszka"], roomObjects=[]}
-office = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
-toilet = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
-kitchen = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
+livingRoom = Room {otherRooms=["gabinet", "kuchnia", "lazienka"], roomItems=["matrioszka"], roomObjects=[], onEnterMsg="Widisz ..."}
+office = Room {otherRooms=["salon"], roomObjects=[], roomItems=[], onEnterMsg="Widisz ..."}
+toilet = Room {otherRooms=["salon"], roomObjects=[], roomItems=[], onEnterMsg="Widisz ..."}
+kitchen = Room {otherRooms=["salon"], roomObjects=[], roomItems=[], onEnterMsg="Widisz ..."}
 
 roomSet :: [(String, Room)]
 roomSet = [("salon", livingRoom),

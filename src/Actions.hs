@@ -20,7 +20,8 @@ dispatch (AppState {user=u, rooms=rs, items=items}) (GoToRoomAction newRoomName)
             = successOutput AppState {user=(u {currentRoomName=newRoomName}), rooms=rs, items=items}
         | otherwise = failureOutput
 
-  where successOutput appState = DispatchOutput {appState=appState, output="Jestes teraz w " ++ newRoomName}
+  where successOutput appState 
+            = DispatchOutput {appState=appState, output="Jestes teraz w " ++ newRoomName ++ "\n\n" ++ (Room.getOnEnterMsg newRoomName rs)}
         failureOutput = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie ma takiego pokoju"}
         currentRoomName = User.currentRoomName u
         checkIfPossibleRoom roomName currentRoom allRooms = roomName `elem` (getOtherRooms currentRoom allRooms)
