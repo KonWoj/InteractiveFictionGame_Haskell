@@ -35,6 +35,7 @@ parseCommandInner x (y:ys) | x == "goToRoom" = parseGoToRoomCommand (y:ys)
 
 parseCommand :: String -> Maybe Command.UserCommand
 parseCommand (x:xs) = parseCommandInner [x] xs
+parseCommand _ = Nothing 
 
 trim :: String -> String
 trim = f . f
