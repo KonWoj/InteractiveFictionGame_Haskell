@@ -9,6 +9,8 @@ import Item
 
 data Action = GoToRoomAction String
     | PickUpAction String
+    | DrinkAction String
+    | LickAction String
     | OpenAction String
     | ReadAction String
     | GetInfoAction
@@ -62,6 +64,30 @@ dispatch AppState {user=u, rooms=rs, items=items} (OpenAction itemName)
           itemWasOpenedMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Przedmiot zostal juz otwarty"}
           successMsg appState = DispatchOutput {appState=appState, output="Otwarto " ++ itemName ++ ". W srodku znajdowal sie " ++ fromJust (Item.getInnerItem itemName items)}
 
+dispatch AppState {user=u, rooms=rs, items=items} (DrinkAction itemName)
+        | not checkIfItemInInventory = itemNotFoundMsg
+        | not checkIfItemCanBeDrink = itemCannotBeDrink
+        | otherwise = successMsg
+
+    where currentInventory = User.inventory u
+          checkIfItemInInventory = itemName `elem` User.inventory u
+          checkIfItemCanBeDrink = isJust (Item.getOnDrink itemName items)
+          itemNotFoundMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie znaleziono takiego przedmiotu"}
+          itemCannotBeDrink = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie można tego wypić..."}
+          successMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output= fromJust (Item.getOnDrink itemName items)}
+
+dispatch AppState {user=u, rooms=rs, items=items} (LickAction itemName)
+        | not checkIfItemInInventory = itemNotFoundMsg
+        | not checkIfItemCanBeLick = itemCannotBeLick
+        | otherwise = successMsg
+
+    where currentInventory = User.inventory u
+          checkIfItemInInventory = itemName `elem` User.inventory u
+          checkIfItemCanBeLick = isJust (Item.getOnLick itemName items)
+          itemNotFoundMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie znaleziono takiego przedmiotu"}
+          itemCannotBeLick = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Dlaczego to chcesz polizać... nie możesz tego zrobić"} 
+          successMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output= fromJust (Item.getOnLick itemName items)}
+
 
 dispatch AppState {user=u, rooms=rs, items=items} (ReadAction itemName)
         | not checkIfItemInInventory = itemNotFoundMsg
@@ -89,4 +115,6 @@ helpAction = "Dostępne komendy:\n\
              \goToRoom [roomName] - przejdz do pokoju o nazwie roomName\n\
              \getInfo - wyswietl informacje o otoczeniu\n\
              \pickUp [itemName] - podnies przedmiot o nazwie itemName\n\
+             \drink [itemName] - wypij zawartość przedmiotu itemName\n\
+             \lick [itemName] - poliż przedmiot itemName\n\
              \open [itemName] - otworz przedmiot z inwentarza o nazwie itemName"

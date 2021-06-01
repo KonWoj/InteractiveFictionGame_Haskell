@@ -15,11 +15,11 @@ roomSet = [("salon", livingRoom),
            ("lazienka", toilet),
            ("kuchnia", kitchen)]
 
-matryoshka = Item {innerItem=Just "srednia matrioszka", onReadMsg="Widzisz lalke matrioszke"}
-mediumMatryoshka = Item {innerItem=Just "mala matrioszka", onReadMsg="Widzisz sredniej wielkosci lalke matrioszke"}
-smallMatryoshka = Item {innerItem=Just "bardzo mala matrioszka", onReadMsg="Widzisz mala lalke matrioszke"}
-verySmallMatryoshka = Item {innerItem=Just "stary list", onReadMsg="Widzisz bardzo mala lalke matrioszke"}
-oldLetter = Item {innerItem=Nothing, onReadMsg="Widzisz stary list z napisem: \" Jakiś napis \""}
+matryoshka = Item {innerItem=Just "srednia matrioszka", onLick= Just "Smakuje drewnem...", onDrink=Just "Przypominasz sobie o książce Kongres Futurologiczny", onReadMsg="Widzisz lalke matrioszke"}
+mediumMatryoshka = Item {innerItem=Just "mala matrioszka", onLick=Nothing, onDrink=Nothing, onReadMsg="Widzisz sredniej wielkosci lalke matrioszke"}
+smallMatryoshka = Item {innerItem=Just "bardzo mala matrioszka", onLick=Nothing, onDrink=Nothing,  onReadMsg="Widzisz mala lalke matrioszke"}
+verySmallMatryoshka = Item {innerItem=Just "stary list", onLick=Nothing, onDrink=Nothing,  onReadMsg="Widzisz bardzo mala lalke matrioszke"}
+oldLetter = Item {innerItem=Nothing, onLick=Nothing, onDrink=Just "Przypominasz sobie o książce Kongres Futurologiczny",  onReadMsg="Widzisz stary list z napisem: \" Jakiś napis \""}
 
 itemSet :: [(String, Item)]
 itemSet = [("matrioszka", matryoshka),
