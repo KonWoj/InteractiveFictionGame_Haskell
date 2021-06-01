@@ -13,10 +13,3 @@ getOtherRooms roomName roomSet = maybe [] Room.otherRooms room
 getRoomItems :: String -> [(String, Room)] -> [String]
 getRoomItems roomName roomSet = maybe [] Room.roomItems room
     where room = lookup roomName roomSet
-
-getOnEnterMsg :: String -> [(String, Room)] -> String
-getOnEnterMsg roomName roomSet = maybe "Nie ma takiego pokoju" Room.onEnterMsg room
-    where room = lookup roomName roomSet
-
-
-
