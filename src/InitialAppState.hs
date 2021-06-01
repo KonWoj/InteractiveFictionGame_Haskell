@@ -4,10 +4,10 @@ import AppState ( AppState(AppState, items, rooms, user) )
 import User
 import Item 
 
-livingRoom = Room {otherRooms=["gabinet", "kuchnia", "lazienka"], roomItems=["matrioszka"], roomObjects=[], onEnterMsg="Widzisz ..."}
-office = Room {otherRooms=["salon"], roomObjects=[], roomItems=[], onEnterMsg="Widzisz ..."}
-toilet = Room {otherRooms=["salon"], roomObjects=[], roomItems=[], onEnterMsg="Widzisz ..."}
-kitchen = Room {otherRooms=["salon"], roomObjects=[], roomItems=[], onEnterMsg="Widisz ..."}
+livingRoom = Room {otherRooms=["gabinet", "kuchnia", "lazienka"], roomItems=["matrioszka"], roomObjects=[]}
+office = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
+toilet = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
+kitchen = Room {otherRooms=["salon"], roomObjects=[], roomItems=[]}
 
 roomSet :: [(String, Room)]
 roomSet = [("salon", livingRoom),

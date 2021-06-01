@@ -4,7 +4,7 @@ import Data.List
 
 data RoomObject =  Monster deriving Show
 
-data Room = Room {otherRooms :: [String], roomItems :: [String], roomObjects :: [RoomObject], onEnterMsg :: String} deriving Show
+data Room = Room {otherRooms :: [String], roomItems :: [String], roomObjects :: [RoomObject]} deriving Show
 
 getOtherRooms :: String -> [(String, Room)] -> [String]
 getOtherRooms roomName roomSet = maybe [] Room.otherRooms room
