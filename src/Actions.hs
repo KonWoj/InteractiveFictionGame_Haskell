@@ -37,11 +37,11 @@ dispatch AppState {user=u, rooms=rs, items=items} (PickUpAction newItem)
             = successOutput AppState {user=(u {inventory=addItemToInventory}), rooms=rs, items=items}
         | otherwise = failureMsg
 
-  where successOutput appState = DispatchOutput {appState=appState, output="Podniosiono " ++ newItem}
+  where successOutput appState = DispatchOutput {appState=appState, output="Podniesiono " ++ newItem}
         failureMsg
             = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie znaleziono takiego przedmiotu"}
         itemFoundMsg
-            = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Ten przedmiot zostal juz podniesiony"}
+            = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Ten przedmiot został już podniesiony"}
         currentRoomName = User.currentRoomName u
         checkIfPossibleItem roomName = newItem `elem` Room.getRoomItems roomName rs
         checkIfItemInInventory = newItem `elem` User.inventory u
@@ -60,9 +60,9 @@ dispatch AppState {user=u, rooms=rs, items=items} (OpenAction itemName)
           checkIfItemWasOpened = fromJust (Item.getInnerItem itemName items) `elem` User.inventory u
           addInnerItemToInventory = User.inventory u ++ [fromJust (Item.getInnerItem itemName items)]
           itemNotFoundMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie znaleziono takiego przedmiotu"}
-          itemCannotBeOpenedMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Przedmiot nie moze zostac otwarty"}
-          itemWasOpenedMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Przedmiot zostal juz otwarty"}
-          successMsg appState = DispatchOutput {appState=appState, output="Otwarto " ++ itemName ++ ". W srodku znajdowal sie " ++ fromJust (Item.getInnerItem itemName items)}
+          itemCannotBeOpenedMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Przedmiot nie może zostać otwarty"}
+          itemWasOpenedMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Przedmiot został juz otwarty"}
+          successMsg appState = DispatchOutput {appState=appState, output="Otwarto " ++ itemName ++ ". W środku znajdował się " ++ fromJust (Item.getInnerItem itemName items)}
 
 dispatch AppState {user=u, rooms=rs, items=items} (DrinkAction itemName)
         | not checkIfItemInInventory = itemNotFoundMsg
@@ -108,13 +108,13 @@ getInfoAction AppState {user=u, rooms=rs, items=items} = currentRoomMsg currentR
           itemsInRoom = Room.getRoomItems currentRoomName rs \\ User.inventory u
           itemsInRoomMsg items = "W pokoju znajdują się następujące przedmioty: " ++ ", " `intercalate` items
           currentRoomMsg currentRoomName = "Jestes teraz w " ++ currentRoomName
-          otherRoomsMsg currentRoomName allRooms = "Mozesz przejsc do " ++ (", " `intercalate` getOtherRooms currentRoomName allRooms)
+          otherRoomsMsg currentRoomName allRooms = "Możesz przejść do " ++ (", " `intercalate` getOtherRooms currentRoomName allRooms)
           inventoryMsg inventory = "Inwentarz: " ++ (", " `intercalate` inventory)
 
 helpAction = "Dostępne komendy:\n\
-             \goToRoom [roomName] - przejdz do pokoju o nazwie roomName\n\
-             \getInfo - wyswietl informacje o otoczeniu\n\
-             \pickUp [itemName] - podnies przedmiot o nazwie itemName\n\
+             \goToRoom [roomName] - przejdź do pokoju o nazwie roomName\n\
+             \getInfo - wyświetl informacje o otoczeniu\n\
+             \pickUp [itemName] - podnieś przedmiot o nazwie itemName\n\
              \drink [itemName] - wypij zawartość przedmiotu itemName\n\
              \lick [itemName] - poliż przedmiot itemName\n\
-             \open [itemName] - otworz przedmiot z inwentarza o nazwie itemName"
+             \open [itemName] - otwórz przedmiot z inwentarza o nazwie itemName"
