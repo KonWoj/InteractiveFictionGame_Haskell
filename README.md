@@ -2,7 +2,7 @@
 ## How to run project?
 
 ```bash
-cd ./src
+cd src
 ghc --make Main.hs
 ./Main
 
