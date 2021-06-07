@@ -15,8 +15,21 @@ data Action = GoToRoomAction String
     | ReadAction String
     | GetInfoAction
 
+{-
+Dispatch given action
+    frist argument: current AppState
+    second argument: action
+
+    returns: DispatchOutput with new AppState and dispatch msg
+-}
 dispatch :: AppState -> Action -> DispatchOutput
 
+{-
+Dispatch GoToRoomAction:
+    check if destination room is in available rooms 
+
+    on success: change currentRoom in AppState
+-}
 dispatch AppState {user=u, rooms=rs, items=items} (GoToRoomAction newRoomName)
         | checkIfPossibleRoom newRoomName currentRoomName rs
             = successOutput AppState {user=(u {currentRoomName=newRoomName}), rooms=rs, items=items}
@@ -30,7 +43,13 @@ dispatch AppState {user=u, rooms=rs, items=items} (GoToRoomAction newRoomName)
         itemsInRoomMsg items = "Zauważasz następujące przedmioty: " ++ ", " `intercalate` items
         checkIfPossibleRoom roomName currentRoom allRooms = roomName `elem` getOtherRooms currentRoom allRooms
 
+{-
+Dispatch PickUpAction:
+    check if item already in inventory
+    check if item is available in current room 
 
+    on success: add item to inventory in AppState
+-}
 dispatch AppState {user=u, rooms=rs, items=items} (PickUpAction newItem)
         | checkIfItemInInventory = itemFoundMsg
         | checkIfPossibleItem currentRoomName
@@ -47,7 +66,14 @@ dispatch AppState {user=u, rooms=rs, items=items} (PickUpAction newItem)
         checkIfItemInInventory = newItem `elem` User.inventory u
         addItemToInventory = User.inventory u ++ [newItem]
 
+{-
+Dispatch OpenAction:
+    check if item is in inventory
+    check if item can be opened
+    check if item was already opened
 
+    on success: add inner item to inventory in AppState
+-}
 dispatch AppState {user=u, rooms=rs, items=items} (OpenAction itemName)
         | not checkIfItemInInventory = itemNotFoundMsg
         | not checkIfItemCanBeOpened = itemCannotBeOpenedMsg
@@ -64,6 +90,13 @@ dispatch AppState {user=u, rooms=rs, items=items} (OpenAction itemName)
           itemWasOpenedMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Przedmiot został juz otwarty"}
           successMsg appState = DispatchOutput {appState=appState, output="Otwarto " ++ itemName ++ ". W środku znajdował się " ++ fromJust (Item.getInnerItem itemName items)}
 
+{-
+Dispatch DrinkAction:
+    check if item is in inventory
+    check if item can be drunk
+
+    on success: display msg
+-}
 dispatch AppState {user=u, rooms=rs, items=items} (DrinkAction itemName)
         | not checkIfItemInInventory = itemNotFoundMsg
         | not checkIfItemCanBeDrink = itemCannotBeDrink
@@ -76,6 +109,13 @@ dispatch AppState {user=u, rooms=rs, items=items} (DrinkAction itemName)
           itemCannotBeDrink = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie można tego wypić..."}
           successMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output= fromJust (Item.getOnDrink itemName items)}
 
+{-
+Dispatch LickAction:
+    check if item is in inventory
+    check if item can be licked
+
+    on success: display msg
+-}
 dispatch AppState {user=u, rooms=rs, items=items} (LickAction itemName)
         | not checkIfItemInInventory = itemNotFoundMsg
         | not checkIfItemCanBeLick = itemCannotBeLick
@@ -88,7 +128,12 @@ dispatch AppState {user=u, rooms=rs, items=items} (LickAction itemName)
           itemCannotBeLick = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Dlaczego to chcesz polizać... nie możesz tego zrobić"} 
           successMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output= fromJust (Item.getOnLick itemName items)}
 
-
+{-
+Dispatch ReadAction:
+    check if item is in inventory
+   
+    on success: display msg
+-}
 dispatch AppState {user=u, rooms=rs, items=items} (ReadAction itemName)
         | not checkIfItemInInventory = itemNotFoundMsg
         | otherwise = succesMsg
@@ -97,7 +142,13 @@ dispatch AppState {user=u, rooms=rs, items=items} (ReadAction itemName)
         itemNotFoundMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output="Nie znaleziono takiego przedmiotu"}
         succesMsg = DispatchOutput {appState=AppState {user=u, rooms=rs, items=items}, output=Item.getOnReadMsg itemName items}
 
-
+{-
+Get info about game: 
+    current room
+    current inventory
+    items available in current room
+    other available rooms
+-}
 getInfoAction :: AppState -> String
 getInfoAction AppState {user=u, rooms=rs, items=items} = currentRoomMsg currentRoomName ++ "\n"
                                                             ++ itemsInRoomMsg itemsInRoom ++ "\n"
@@ -115,6 +166,7 @@ helpAction = "Dostępne komendy:\n\
              \goToRoom [roomName] - przejdź do pokoju o nazwie roomName\n\
              \getInfo - wyświetl informacje o otoczeniu\n\
              \pickUp [itemName] - podnieś przedmiot o nazwie itemName\n\
+             \read [itemName] - przeczytaj przedmiot itemName\n\
              \drink [itemName] - wypij zawartość przedmiotu itemName\n\
              \lick [itemName] - poliż przedmiot itemName\n\
              \open [itemName] - otwórz przedmiot z inwentarza o nazwie itemName"

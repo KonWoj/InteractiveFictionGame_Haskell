@@ -1,5 +1,8 @@
 module Command where
 
+{-
+UserCommand type
+-}
 data UserCommand = Help 
     | GetInfo 
     | GoToRoom {newRoomName :: String} 

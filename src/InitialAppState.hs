@@ -4,12 +4,18 @@ import AppState ( AppState(AppState, items, rooms, user) )
 import User
 import Item 
 
-livingRoom = Room {otherRooms=["gabinet", "kuchnia", "sypialnia", "garderoba"], roomItems=["matrioszka"], roomObjects=[]}
-office = Room {otherRooms=["salon"], roomObjects=[], roomItems=["czerwona książka", "żółta książka"]}
-bedroom = Room {otherRooms=["salon"], roomObjects=[], roomItems=["poduszka", "laptop"]}
-kitchen = Room {otherRooms=["salon"], roomObjects=[], roomItems=["piwo", "garnek"]}
-wardrobe = Room {otherRooms=["salon"], roomObjects=[], roomItems=["buty", "płaszcz"]}
+{-
+All rooms instances
+-}
+livingRoom = Room {otherRooms=["gabinet", "kuchnia", "sypialnia", "garderoba"], roomItems=["matrioszka"]}
+office = Room {otherRooms=["salon"], roomItems=["czerwona książka", "żółta książka"]}
+bedroom = Room {otherRooms=["salon"], roomItems=["poduszka", "laptop"]}
+kitchen = Room {otherRooms=["salon"], roomItems=["piwo", "garnek"]}
+wardrobe = Room {otherRooms=["salon"], roomItems=["buty", "płaszcz"]}
 
+{-
+Room set. List of room names and coressponding room instances
+-}
 roomSet :: [(String, Room)]
 roomSet = [("salon", livingRoom),
            ("gabinet", office),
@@ -17,6 +23,9 @@ roomSet = [("salon", livingRoom),
            ("kuchnia", kitchen),
            ("garderoba", wardrobe)]
 
+{-
+All items instances
+-}
 matryoshka = Item {
     innerItem=Just "średnia matrioszka",
     onLick= Just "Smakuje drewnem...",
@@ -120,7 +129,9 @@ redBook = Item {
     }
 
 
-
+{-
+Item set. List of item names and coressponding item instances
+-}
 itemSet :: [(String, Item)]
 itemSet = [("matrioszka", matryoshka),
            ("średnia matrioszka", mediumMatryoshka),
@@ -139,8 +150,13 @@ itemSet = [("matrioszka", matryoshka),
            ("czerwona książka", redBook)]
 
 
-
+{-
+UserCharacter instance with initial room and empty inventory
+-}
 userChar :: UserCharacter
 userChar = UserCharacter{currentRoomName="salon", inventory=[]}
 
+{-
+AppState instace with initial UserCharacter instance, room set and item set
+-}
 initialAppState = AppState {user=userChar, rooms=roomSet, items=itemSet}
